@@ -16,11 +16,11 @@ repositories {
 
 dependencies {
     compileOnly("org.jetbrains:annotations:24.1.0")
+    compileOnly("org.apache.logging.log4j:log4j-core:2.22.1")
     testCompileOnly("org.jetbrains:annotations:24.1.0")
 
     implementation("org.apache.maven.resolver:maven-resolver-impl:1.9.18")
     implementation("org.apache.maven.resolver:maven-resolver-supplier:1.9.18")
-    implementation("org.slf4j:slf4j-nop:1.7.36")
 }
 
 java {

@@ -1,5 +1,7 @@
 package com.alessiodp.libby.maven.resolver;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
@@ -8,6 +10,7 @@ import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.graph.Dependency;
+import org.eclipse.aether.internal.impl.DefaultArtifactResolver;
 import org.eclipse.aether.repository.ArtifactRepository;
 import org.eclipse.aether.repository.LocalRepository;
 import org.eclipse.aether.repository.RemoteRepository;
@@ -21,6 +24,7 @@ import org.eclipse.aether.util.artifact.JavaScopes;
 import org.eclipse.aether.util.filter.ScopeDependencyFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 import java.util.AbstractMap.SimpleEntry;
@@ -80,6 +84,9 @@ public class TransitiveDependencyCollector {
     public TransitiveDependencyCollector(@NotNull Path saveDirectory) {
         this.saveDirectory = saveDirectory;
         this.repositorySystemSession = newRepositorySystemSession(repositorySystem);
+        try {
+            Configurator.setLevel(DefaultArtifactResolver.class, Level.OFF);
+        } catch (Throwable ignored) {}
     }
 
     /**
@@ -107,7 +114,6 @@ public class TransitiveDependencyCollector {
     @NotNull
     public Collection<Entry<Artifact, @Nullable String>> findTransitiveDependencies(@NotNull String groupId, @NotNull String artifactId, @NotNull String version, @NotNull String classifier, @NotNull List<RemoteRepository> repositories) throws DependencyResolutionException {
         Artifact artifact = new DefaultArtifact(groupId, artifactId, classifier, "jar", version);
-
         CollectRequest collectRequest = new CollectRequest(new Dependency(artifact, JavaScopes.COMPILE), repositories);
         DependencyRequest dependencyRequest = new DependencyRequest(collectRequest, new ScopeDependencyFilter(Arrays.asList(JavaScopes.COMPILE, JavaScopes.RUNTIME), Collections.emptyList()));
 
