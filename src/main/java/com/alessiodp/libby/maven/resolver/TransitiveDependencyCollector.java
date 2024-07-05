@@ -15,6 +15,7 @@ import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.resolution.DependencyRequest;
 import org.eclipse.aether.resolution.DependencyResolutionException;
 import org.eclipse.aether.resolution.DependencyResult;
+import org.eclipse.aether.spi.log.Logger;
 import org.eclipse.aether.supplier.RepositorySystemSupplier;
 import org.eclipse.aether.util.artifact.JavaScopes;
 import org.eclipse.aether.util.filter.ScopeDependencyFilter;
@@ -79,6 +80,7 @@ public class TransitiveDependencyCollector {
     public TransitiveDependencyCollector(@NotNull Path saveDirectory) {
         this.saveDirectory = saveDirectory;
         this.repositorySystemSession = newRepositorySystemSession(repositorySystem);
+        System.setProperty("log4j.rootLogger", "OFF");
     }
 
     /**
