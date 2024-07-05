@@ -80,7 +80,6 @@ public class TransitiveDependencyCollector {
     public TransitiveDependencyCollector(@NotNull Path saveDirectory) {
         this.saveDirectory = saveDirectory;
         this.repositorySystemSession = newRepositorySystemSession(repositorySystem);
-        System.setProperty("log4j.rootLogger", "OFF");
     }
 
     /**
