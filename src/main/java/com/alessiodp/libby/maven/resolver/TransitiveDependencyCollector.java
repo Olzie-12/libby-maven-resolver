@@ -3,6 +3,7 @@ package com.alessiodp.libby.maven.resolver;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
+import org.eclipse.aether.ConfigurationProperties;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
@@ -84,6 +85,7 @@ public class TransitiveDependencyCollector {
     public TransitiveDependencyCollector(@NotNull Path saveDirectory) {
         this.saveDirectory = saveDirectory;
         this.repositorySystemSession = newRepositorySystemSession(repositorySystem);
+
         try {
             Configurator.setLevel(DefaultArtifactResolver.class, Level.OFF);
         } catch (Throwable ignored) {}
@@ -116,7 +118,6 @@ public class TransitiveDependencyCollector {
         Artifact artifact = new DefaultArtifact(groupId, artifactId, classifier, "jar", version);
         CollectRequest collectRequest = new CollectRequest(new Dependency(artifact, JavaScopes.COMPILE), repositories);
         DependencyRequest dependencyRequest = new DependencyRequest(collectRequest, new ScopeDependencyFilter(Arrays.asList(JavaScopes.COMPILE, JavaScopes.RUNTIME), Collections.emptyList()));
-
         DependencyResult dependencyResult = repositorySystem.resolveDependencies(repositorySystemSession, dependencyRequest);
 
         return dependencyResult.getArtifactResults()
@@ -165,6 +166,9 @@ public class TransitiveDependencyCollector {
 
         Properties properties = new Properties();
         properties.putAll(System.getProperties());
+
+        properties.setProperty(ConfigurationProperties.CONNECT_TIMEOUT, "5000");
+        properties.setProperty(ConfigurationProperties.REQUEST_TIMEOUT, "5000");
 
         session.setSystemProperties(properties);
         session.setConfigProperties(properties);
