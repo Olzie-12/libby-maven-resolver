@@ -167,8 +167,8 @@ public class TransitiveDependencyCollector {
         Properties properties = new Properties();
         properties.putAll(System.getProperties());
 
-        properties.setProperty(ConfigurationProperties.CONNECT_TIMEOUT, "5000");
-        properties.setProperty(ConfigurationProperties.REQUEST_TIMEOUT, "5000");
+        properties.setProperty(ConfigurationProperties.CONNECT_TIMEOUT, "25000");
+        properties.setProperty(ConfigurationProperties.REQUEST_TIMEOUT, "25000");
 
         session.setSystemProperties(properties);
         session.setConfigProperties(properties);
