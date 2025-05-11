@@ -35,9 +35,9 @@ java {
 tasks.withType<ShadowJar> {
     archiveClassifier.set("")
     //minimize()
+    relocate("org.apache.http", "com.alessiodp.libby.maven.resolver.http")
     relocate("org.eclipse.aether", "com.alessiodp.libby.maven.resolver.aether")
     relocate("org.apache.maven.repository", "com.alessiodp.libby.maven.resolver.repository")
-    relocate("org.apache.http", "com.alessiodp.libby.maven.resolver.http")
 }
 
 tasks.jar {
